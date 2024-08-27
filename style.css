@@ -1,0 +1,42 @@
+#weather-info {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    color: #333;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#loader {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.cat-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.cat-pic {
+    border: 1px solid #333;
+    max-width: 300px;
+    display: block;
+    margin: 0 auto;
+}
+
+.change-cat-btn {
+    background-color: #ffbf1f;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+
+}
+
+.change-cat-btn:hover {
+    background-color: #edb021;
+}

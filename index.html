@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Weather and Cat App</title>
+</head>
+<body>
+    <!-- индикатор загрузки -->
+    <div id="loader" style="display: none">Loading.....</div>
+    <!-- тут будет инфа о погоде -->
+    <div id="weather-info"></div>
+    <div id="cat-image" class="cat-container">
+        <img id="cat-pic" class="cat-pic">
+        <button class="change-cat-btn">Change Cat Image</button>
+    </div>
+    <script src="index.js"></script>
+    <script>
+        async function showWeather() {
+            // показываем индикатор загрузки
+            document.getElementById('loader').style.display = 'block';
+            // возвращаем данные о местоположении и сох в перем 
+            // await ожидает завершения
+            const locationData = await getLocation();
+            // вызов асинх функции getWeather передаем ей широту и долготу и сохраняем инфо о погоде
+            const weatherData = await getWeather(locationData.latitude, locationData.longitude);
+            // создаем строку weatherInfo храним инфо о городе и темпер и т.д (данные берем из locationData и weatherData)
+            const weatherInfo = `
+                City: ${locationData.city}
+                Temperature: ${weatherData.current_weather.temperature}°C
+                Wind Speed: ${weatherData.current_weather.windspeed} km/h
+                Weather: ${interpretWeatherCode(weatherData.current_weather.weathercode)}
+            `;
+            // запрос с котам
+            const catImage = await getCatImage();
+            // задержка в 1ю5 сек перед выполнением кода
+            setTimeout(() => {
+                // скрываем лоадер
+                document.getElementById('loader').style.display = 'none';
+                // находим эл с weather-info и вставлем в него инфо о погоде
+                document.getElementById('weather-info').innerText = weatherInfo;
+                // ставим картинку
+                document.getElementById('cat-pic').src = catImage;
+            }, 1500);
+        }
+        // запускаем функцию
+        showWeather();
+
+        // Получение данных о коте
+        async function getCatImage() {
+            const headers = new Headers({
+                // указание что это именно json
+                "Content-Type": "application/json",
+            });
+
+            const requestOptions = {
+                // get Получение данных
+                method: 'GET',
+                headers: headers,
+                // перенаправляет на др картинку
+                redirect: 'follow'
+            };
+
+            const response = await fetch(
+                "https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit=1",
+                requestOptions);
+                // преобразовываем в json
+            const data = await response.json();
+            // Возвращаем URL изображения кота
+            return data[0].url;
+        }
+
+        // нажатия на кнопку (найти эл с классом change-cat-btn). обраб событие
+        document.querySelector('.change-cat-btn').addEventListener('click', async () => {
+            // newCatImage храним тут
+            const newCatImage = await getCatImage();
+            // находим эл с идент cat-pic
+            document.getElementById('cat-pic').src = newCatImage;
+        });
+    </script>
+</body>
+</html>
