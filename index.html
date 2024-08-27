@@ -8,7 +8,7 @@
 </head>
 <body>
     <!-- индикатор загрузки -->
-    <div id="loader" style="display: none">Loading.....</div>
+    <div id="loader" style="display: none">Необходимо подождать .....</div>
     <!-- тут будет инфа о погоде -->
     <div id="weather-info"></div>
     <div id="cat-image" class="cat-container">
@@ -34,7 +34,7 @@
             `;
             // запрос с котам
             const catImage = await getCatImage();
-            // задержка в 1ю5 сек перед выполнением кода
+            // задержка в 3 сек перед выполнением кода
             setTimeout(() => {
                 // скрываем лоадер
                 document.getElementById('loader').style.display = 'none';
